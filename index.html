@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maddy — Launch Read-out</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF7F2; --panel:#FFFFFF; --ink:#2B2A33; --muted:#6E6A78; --line:#ECE6DD;
+    --violet:#7C6BD6; --violet-soft:#EFEBFB; --mint:#3FA98B; --mint-soft:#E4F4EE;
+    --amber:#C98A2B; --amber-soft:#FBEFD9; --rose:#D5677F; --rose-soft:#FBE7EC;
+    --sky:#3E86C4; --sky-soft:#E6F0FA;
+    --shadow:0 1px 2px rgba(43,42,51,.04),0 8px 24px rgba(43,42,51,.06);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Lexend",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:var(--violet);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* header */
+  header.hero{padding:54px 0 26px;}
+  .kick{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);font-weight:600}
+  h1{font-size:40px;line-height:1.1;margin:10px 0 8px;font-weight:700;letter-spacing:-.02em}
+  .sub{font-size:18px;color:var(--muted);max-width:760px;font-weight:300}
+  .meta{margin-top:16px;font-size:13px;color:var(--muted)}
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* at-a-glance */
+  .glance{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 8px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+  .stat .n{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:2px}
+  .stat.shipped .n{color:var(--mint)} .stat.must .n{color:var(--rose)}
+  .stat.should .n{color:var(--amber)} .stat.decide .n{color:var(--violet)}
+
+  /* sticky nav */
+  nav.toc{position:sticky;top:0;z-index:20;background:rgba(251,247,242,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-top:24px}
+  nav.toc .wrap{display:flex;gap:6px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+  nav.toc a{font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 12px;border-radius:999px;border:1px solid transparent}
+  nav.toc a:hover{color:var(--ink);background:var(--panel);border-color:var(--line);text-decoration:none}
+
+  section{padding:34px 0 6px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  h2{font-size:25px;margin:0;font-weight:700;letter-spacing:-.01em}
+  .sec-tag{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+  .tag-must{background:var(--rose-soft);color:var(--rose)}
+  .tag-should{background:var(--amber-soft);color:var(--amber)}
+  .tag-at{background:var(--sky-soft);color:var(--sky)}
+  .tag-fast{background:var(--mint-soft);color:var(--mint)}
+  .tag-later{background:var(--violet-soft);color:var(--violet)}
+  .sec-note{color:var(--muted);font-size:15px;margin:6px 0 20px;max-width:820px}
+
+  .cards{display:grid;gap:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .card .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .card h3{font-size:16.5px;margin:0;font-weight:600;flex:1;min-width:240px}
+  .card p{margin:9px 0 0;color:var(--muted);font-size:14.5px}
+  .card p b{color:var(--ink);font-weight:600}
+  .pill{font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+  .p-shipped{background:var(--mint-soft);color:var(--mint)}
+  .p-partial{background:var(--amber-soft);color:var(--amber)}
+  .p-missing{background:var(--rose-soft);color:var(--rose)}
+  .p-decide{background:var(--violet-soft);color:var(--violet)}
+  .p-admin{background:#EEE9E2;color:#7a715f}
+  .owner{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-weight:600}
+  .ref{font-size:12.5px;color:var(--violet);font-weight:500}
+
+  /* feedback strip */
+  .gabby{background:linear-gradient(180deg,#fff,#FCFAFF);border:1px solid var(--violet-soft)}
+  .fb-row{display:grid;grid-template-columns:1.1fr 1fr auto;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+  .fb-row:first-of-type{border-top:none}
+  .fb-row .said{font-weight:500}
+  .fb-row .real{color:var(--muted);font-size:14px}
+  @media(max-width:720px){.fb-row{grid-template-columns:1fr}.glance{grid-template-columns:repeat(2,1fr)}h1{font-size:32px}}
+
+  .callout{background:var(--violet-soft);border:1px solid #DfD7F6;border-radius:var(--radius);padding:20px 22px;margin:8px 0}
+  .callout h3{margin:0 0 4px;font-size:17px}
+  .decision{padding:12px 0;border-top:1px dashed #cdbff0}
+  .decision:first-of-type{border-top:none}
+  .decision b{display:block;margin-bottom:2px}
+  .decision span{color:#5b5470;font-size:14px}
+
+  footer{padding:40px 0 70px;color:var(--muted);font-size:13px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 0;font-size:13px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:50%}
+  table.idx{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+  table.idx th,table.idx td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.idx th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  table.idx tr:hover td{background:#FCFAF6}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">Maddy · Launch Read-out</div>
+    <h1>Where we are, what's left, and the order to do it in</h1>
+    <p class="sub">A verified state-of-the-app, written against the actual code (not the stale checklists), folding in Gabby's solo-user feedback and the full outstanding queue. Organized exactly the way you asked: must-do, should-do, launch day, fast-follow, ideation.</p>
+    <div class="meta"><b>Prepared:</b> June 15, 2026 &nbsp;·&nbsp; <b>Method:</b> code-verified (auth, paywall, deletion, ops all re-checked) &nbsp;·&nbsp; <b>Source of truth:</b> the repo, GitHub issues, LAUNCH_PLAN/CHECKLIST, this week's feedback</div>
+
+    <div class="glance">
+      <div class="stat shipped"><div class="n">Strong</div><div class="l">Core launch machinery is already shipped</div></div>
+      <div class="stat must"><div class="n">7</div><div class="l">Must-do before launch (gates submission)</div></div>
+      <div class="stat should"><div class="n">9</div><div class="l">Should-do before launch (quality &amp; retention)</div></div>
+      <div class="stat decide"><div class="n">5</div><div class="l">Open decisions only you can make</div></div>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--mint)"></span>Shipped / verified</span>
+      <span><span class="dot" style="background:var(--amber)"></span>Partial</span>
+      <span><span class="dot" style="background:var(--rose)"></span>Not built</span>
+      <span><span class="dot" style="background:var(--violet)"></span>Needs your decision</span>
+      <span><span class="dot" style="background:#7a715f"></span>Admin / external</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#tldr">The short version</a>
+  <a href="#gabby">Gabby &amp; OT feedback</a>
+  <a href="#must">Must before launch</a>
+  <a href="#should">Should before launch</a>
+  <a href="#at">At launch</a>
+  <a href="#fast">Fast-follow</a>
+  <a href="#later">Longer-term</a>
+  <a href="#decisions">Decisions for you</a>
+  <a href="#index">Issue index</a>
+</div></nav>
+
+<!-- TL;DR -->
+<section id="tldr"><div class="wrap">
+  <div class="sec-head"><h2>The short version</h2></div>
+  <p class="sec-note">The big, scary launch work is <b>done and verified in code</b>: Supabase auth, Sign in with Apple, the RevenueCat paywall <em>and</em> an enforced subscription gate, the Founding-Circle seat counter wired to a real DB count, account deletion that actually wipes Storage and cancels the RevenueCat customer, all Info.plist permission strings, Sentry crash reporting, and the iPad V1 layer. The invite-join ghost-member bug (#115) is fixed in code too.</p>
+  <p class="sec-note">What's actually left splits into three honest buckets: <b>(1) a handful of Apple-rejection and legal/admin gates</b> that block submission, <b>(2) experience gaps that decide whether the first 100 families stay</b> — the biggest of which is the one Gabby named: reminders don't fire and the solo-user reward loop doesn't make sense, and <b>(3)</b> a long, healthy roadmap of fast-follows and native-iOS ideation. The two most important non-Apple things before launch are <b>notification-permission priming</b> (a cold deny permanently kills the reminders three users just asked for) and <b>a working solo reward model</b> (the thing that made Gabby call it "boring").</p>
+</div></section>
+
+<!-- GABBY -->
+<section id="gabby"><div class="wrap">
+  <div class="sec-head"><h2>Gabby &amp; the OT review</h2><span class="sec-tag tag-should">the trigger for this read-out</span></div>
+  <p class="sec-note">Six points from Gabby (a Solo Subject who first found the app "boring") plus Michele's OT notes. Two of them turned out to differ from what the code does — which changed the fix. Here's the honest mapping.</p>
+  <div class="card gabby">
+    <div class="fb-row"><div class="said">"Vibration felt really short"</div><div class="real">Was a single success notch. Now a fuller two-stage pulse (soft impact + success bloom).</div><span class="pill p-shipped">Shipped today</span></div>
+    <div class="fb-row"><div class="said">Reminders (her #1) — and she's right, she got none</div><div class="real">Designed (#180) but never built. The morning reminder literally has no on-switch. Compounded by no permission priming.</div><span class="pill p-missing">Not built</span></div>
+    <div class="fb-row"><div class="said">Solo rewards "don't make a lot of sense" — she funds herself</div><div class="real">Real structural gap. The reward backbone shipped, but the solo loop has no self-administered contingency. This is the "boring" root cause.</div><span class="pill p-decide">Decision</span></div>
+    <div class="fb-row"><div class="said">"Bubbles making a popping sound" — likes it</div><div class="real">There is no completion sound in the app today (only ambient Care sounds). She's describing confetti/haptic, or wants a pop that doesn't exist yet.</div><span class="pill p-decide">Decision</span></div>
+    <div class="fb-row"><div class="said">"Did you know" — wants ~5, not one-and-done</div><div class="real">Not actually capped. The full Learn reader flips through 100+ infinitely; the Care tile just shows one and navigates there. It's a discoverability gap, not a cap.</div><span class="pill p-partial">Small fix</span></div>
+    <div class="fb-row"><div class="said">Not into unlocking emojis (but "others might be" — Sarah)</div><div class="real">Nothing forces emoji unlocks today; it's one optional custom-reward framing. Current design already respects both temperaments.</div><span class="pill p-shipped">By design</span></div>
+  </div>
+</div></section>
+
+<!-- MUST -->
+<section id="must"><div class="wrap">
+  <div class="sec-head"><h2>1 · Must do before launch</h2><span class="sec-tag tag-must">gates submission / approval / safety</span></div>
+  <p class="sec-note">Apple will reject without these, or they're legal/identity gates that must clear before <code>eas submit</code>, or they're a safety floor for a vulnerable-user product. The good news: most are admin and small code, not big builds.</p>
+  <div class="cards">
+    <div class="card"><div class="top"><h3>Legal links on the signup / auth screen</h3><span class="pill p-missing">Not built</span><span class="owner">C</span></div>
+      <p>Privacy &amp; Terms links exist on the <b>paywall</b> but are <b>missing from the auth/signup surface</b>. Apple expects them at account creation. Small code fix — point at the same <code>mymaddy.app/privacy</code> &amp; <code>/terms</code>.</p></div>
+
+    <div class="card"><div class="top"><h3>Privacy Policy + Terms actually live &amp; hosted</h3><span class="pill p-admin">Admin</span><span class="owner">J</span></div>
+      <p>The app links to <code>mymaddy.app/privacy</code> and <code>/terms</code>. <b>Confirm both URLs resolve</b> to real, complete docs (Supabase, Apple, RevenueCat, Sentry, photos, voice notes, push tokens; minors/parental-consent clause). Dead links = guaranteed rejection.</p></div>
+
+    <div class="card"><div class="top"><h3>App Store Connect: subscription product + Small Business Program</h3><span class="pill p-admin">Admin</span><span class="owner">J</span></div>
+      <p>Paywall code is done and reads a real Apple product. The <b>product itself must exist in ASC</b> ($99/yr founding, 7-day trial, Family Sharing on), attached to the RevenueCat <code>pro</code> entitlement, with the App-Specific Shared Secret stored and Small Business Program enrolled (15% cut).</p></div>
+
+    <div class="card"><div class="top"><h3>Legal/identity admin chain</h3><span class="pill p-admin">Admin</span><span class="owner">J</span></div>
+      <p>California <b>DBA "Maddy"</b> filed + 4-week newspaper publication, business bank account under the DBA, Apple <b>Individual → Organization</b> conversion (D-U-N-S), seller name updated to "Maddy". These gate the ability to submit and get paid cleanly.</p></div>
+
+    <div class="card"><div class="top"><h3>App Store Connect listing complete</h3><span class="pill p-admin">Admin</span><span class="owner">J · Ext</span></div>
+      <p>1024×1024 icon, 6.7" screenshots (3–10), name/subtitle/description (warm voice, names the $149/yr + trial + Founding Circle), keywords, Support/Marketing/Privacy URLs, <b>age rating 13+ (not Kids)</b>, Lifestyle + Health categories, and the <b>App Privacy nutrition label</b> (health-adjacent data: daily_state, photos, voice notes).</p></div>
+
+    <div class="card"><div class="top"><h3>Crisis safety net — consecutive-shutdown caregiver heads-up</h3><span class="pill p-missing">Not built</span><span class="owner">C · J</span></div>
+      <p>No logic detects N consecutive <code>shutdown</code> days (or N days with no entry) and surfaces a <em>quiet, caregiver-only</em> note. Only a manual "reach out" button exists. For a vulnerable-user product this is an ethical floor, not polish (RESEARCH §6/§8). <b>Your call whether it strictly blocks</b>, but I'd ship it. Threshold tuneable (default 5 shutdowns / 10 silent days), no notification to the subject.</p></div>
+
+    <div class="card"><div class="top"><h3>Pre-submission smoke test (incl. the Apple join path)</h3><span class="pill p-partial">Partial</span><span class="owner">J · C</span></div>
+      <p>Full fresh-install run: signup → Apple Sign In → onboarding → state check-in → first completion → caregiver invite/join on a 2nd device → approve → earnings → payout → account deletion verifies Storage is actually gone. Running the <b>Apple join</b> here also closes the last open thread on #115. Plus a demo account in review notes.</p></div>
+  </div>
+</div></section>
+
+<!-- SHOULD -->
+<section id="should"><div class="wrap">
+  <div class="sec-head"><h2>2 · Should do before launch</h2><span class="sec-tag tag-should">decides whether the first 100 stay</span></div>
+  <p class="sec-note">None of these will get you rejected. All of them shape whether a Founding Circle family activates and keeps using it. Ordered by impact. The top two are the direct answer to Gabby.</p>
+  <div class="cards">
+    <div class="card"><div class="top"><h3>Notification-permission priming screen</h3><span class="pill p-missing">Not built</span><span class="owner">C</span></div>
+      <p>The app currently calls the iOS permission prompt <b>cold</b>. A cold deny is near-permanent and <b>silently kills the reminders three users just asked for</b>. A warm "here's why" screen before the system prompt is the single highest-leverage retention fix. Promote toward must if reminders are core to launch.</p></div>
+
+    <div class="card"><div class="top"><h3>Reminders — ship the quick slice now</h3><span class="pill p-missing">Not built</span><span class="ref">#180</span><span class="owner">C</span></div>
+      <p>The full bucket system (Morning/Afternoon/Evening) is blocked on THINGS.md Thread 3 (the "This week" lane, itself half-built) — that's a fast-follow. But the <b>morning-reminder time-setter</b> is independent: the function and DB write path already exist, nothing exposes a picker. One settings row makes a daily reminder actually fire. Directly answers Gabby/Michele/Sarah.</p></div>
+
+    <div class="card"><div class="top"><h3>Solo reward model — make the loop make sense</h3><span class="pill p-decide">Decision + build</span><span class="ref">#187 follow-on</span><span class="owner">C · J</span></div>
+      <p>The reward backbone shipped (#187), but for a self-funding solo user the loop is hollow — "I can reward myself anytime." Two forks you discussed with Gabby: <b>(a) self-discipline</b> — she writes her own rule and the app holds her to it, or <b>(b) accountability partner</b> — add a supporter who gates the treat until she hits a star threshold. See Decisions below. This is the "boring" root cause; worth solving for the solo launch segment.</p></div>
+
+    <div class="card"><div class="top"><h3>Analytics (PostHog or Amplitude)</h3><span class="pill p-missing">Not built</span><span class="owner">C · J</span></div>
+      <p>No product analytics at all. You can't learn from the first 100 without it. Subject-respecting events only (no PII, no copy of state values). Disclose in Privacy Policy + App Privacy label.</p></div>
+
+    <div class="card"><div class="top"><h3>Day-1 warmth (not just a tour)</h3><span class="pill p-partial">Partial</span><span class="owner">C</span></div>
+      <p>Starter tasks + the CompanionWelcome tour exist, but a new user lands on a functional task screen, not a "you're safe here, today is day 1" moment. The checklist's demo-confetti pre-completed task isn't built. This is the emotional first 5 minutes.</p></div>
+
+    <div class="card"><div class="top"><h3>Accessibility pass on core surfaces</h3><span class="pill p-partial">Partial</span><span class="owner">C · Ext</span></div>
+      <p>Reduce Motion is solid. Gaps: VoiceOver labels are sparse on home / task / state check-in; Dynamic Type untested for layout breakage; no per-theme color-contrast audit on record. Important for this audience specifically.</p></div>
+
+    <div class="card"><div class="top"><h3>StoreKit review prompt</h3><span class="pill p-missing">Not built</span><span class="owner">C</span></div>
+      <p>No native review prompt. Low-risk lever — wire it to fire only after a positive moment (post-approval, non-shutdown day, after first payout). Never day 1, never after a hard moment.</p></div>
+
+    <div class="card"><div class="top"><h3>Support link in main Settings</h3><span class="pill p-partial">Partial</span><span class="owner">C</span></div>
+      <p>A <code>support@</code> link lives in outer-ring settings only. Add an "report an issue / get help" link to the main caregiver + subject Settings so help is reachable during onboarding.</p></div>
+
+    <div class="card"><div class="top"><h3>Two known bugs worth clearing</h3><span class="pill p-missing">Open</span><span class="ref">#163 · #164</span><span class="owner">C</span></div>
+      <p><b>#163</b> stale join-state can trap a signed-in user at onboarding finish. <b>#164</b> verify the Lexend trailing-character clip is Expo-Go-only and not in EAS builds. Both small, both touch first-run polish.</p></div>
+  </div>
+</div></section>
+
+<!-- AT LAUNCH -->
+<section id="at"><div class="wrap">
+  <div class="sec-head"><h2>3 · At launch</h2><span class="sec-tag tag-at">the day-of sequence</span></div>
+  <p class="sec-note">What actually happens when you pull the trigger, in order.</p>
+  <div class="cards">
+    <div class="card"><div class="top"><h3>Flip the invite URL to the App Store link</h3><span class="pill p-missing">Launch-day</span><span class="ref">#111</span><span class="owner">C</span></div>
+      <p>Invite-share currently points at TestFlight. One-line swap to the public App Store link before the first public invite goes out.</p></div>
+    <div class="card"><div class="top"><h3>Grandfather the Jeremy/Maddy household</h3><span class="pill p-admin">Config</span><span class="owner">J · C</span></div>
+      <p>No code-side bypass exists (by design). Set their <code>subscriptions</code> row to <code>grandfathered</code> so Maddy never hits the paywall.</p></div>
+    <div class="card"><div class="top"><h3>Production build → eas submit → Apple review</h3><span class="pill p-admin">Process</span><span class="owner">J · C</span></div>
+      <p>Cut the production EAS build, submit, and <b>budget 1–2 review rejections</b> with a 1–2 week buffer. Sandbox IAP is already testable in TestFlight.</p></div>
+    <div class="card"><div class="top"><h3>Founding Circle goes live</h3><span class="pill p-shipped">Code ready</span><span class="owner">J</span></div>
+      <p>$99/yr locked-for-life, real seat counter ("N of 100 left") already wired to the DB. Marketing site + waitlist sends invite codes; the price auto-rises to $149 after 100 with existing seats preserved.</p></div>
+    <div class="card"><div class="top"><h3>Operational layer on</h3><span class="pill p-admin">Ops</span><span class="owner">J</span></div>
+      <p>Sentry crash rate watched daily, support inbox routed and responsive (24h promise), Founding Circle Discord/iMessage open, day-1/7/30 welcome emails firing.</p></div>
+  </div>
+</div></section>
+
+<!-- FAST FOLLOW -->
+<section id="fast"><div class="wrap">
+  <div class="sec-head"><h2>4 · Fast-follow (v1.1, ~30–60 days post-launch)</h2><span class="sec-tag tag-fast">informed by Founding Circle signal</span></div>
+  <p class="sec-note">Real features, deliberately sequenced after launch so the first 100 shape them.</p>
+  <div class="cards">
+    <div class="card"><div class="top"><h3>THINGS.md Thread 3 — the "This week" lane</h3><span class="pill p-partial">Half-built</span><span class="owner">C</span></div>
+      <p>Week math (<code>week.js</code>) landed; the per-subject <code>week_start_day</code> setting and the non-daily "This week" surface are not wired in. This is the upstream dependency for the full reminder system.</p></div>
+    <div class="card"><div class="top"><h3>Full reminder system</h3><span class="pill p-missing">Designed</span><span class="ref">#180</span><span class="owner">C</span></div>
+      <p>The four opt-in nudge types riding Morning/Afternoon/Evening, with no-nag guardrails. Unblocks once Thread 3's lane exists.</p></div>
+    <div class="card"><div class="top"><h3>Calming sensory tools</h3><span class="pill p-missing">Filed</span><span class="ref">#188</span><span class="owner">C</span></div>
+      <p>Lemon-squeeze (PMR) first — pure animation, no native deps, Expo-Go testable. Bubble-breathing second — mic amplitude → bubble, needs an EAS build. Both OT-requested.</p></div>
+    <div class="card"><div class="top"><h3>Graduation logic</h3><span class="pill p-partial">Stub ships v1</span><span class="owner">C · J</span></div>
+      <p>v1 ships the architecture stub (level surfaced in caregiver dashboard); full fade-the-scaffolding logic is the marquee v1.1 — it's the product spine.</p></div>
+    <div class="card"><div class="top"><h3>"Did you know" multi-card + caregiver dashboard + voice-note polish</h3><span class="pill p-missing">Queued</span><span class="ref">#166 · #87</span><span class="owner">C</span></div>
+      <p>Surface multiple Learn cards from the Care tile (small). Caregiver "66 days to habit" patience dashboard (#166). Voice-note waveform/scrub/replay (#87).</p></div>
+    <div class="card"><div class="top"><h3>Apple duplicate-identity root cause</h3><span class="pill p-missing">Open</span><span class="ref">#116</span><span class="owner">C</span></div>
+      <p>The deeper fix behind #115 — Apple Sign In forking a separate account from email login. Hardened ordering already shipped; this closes the fork itself.</p></div>
+    <div class="card"><div class="top"><h3>Emoji-unlock &amp; completion-sound decisions, then build</h3><span class="pill p-decide">Decision</span><span class="ref">#189</span><span class="owner">C · J</span></div>
+      <p>For the Sarah-types who do want cosmetic unlocks (canon-safe framing in #189), and Gabby's "popping sound" — both small builds once you decide direction (see Decisions).</p></div>
+    <div class="card"><div class="top"><h3>Caregiver experience redesign + audio privacy + low-spoons</h3><span class="pill p-missing">Queued</span><span class="ref">#140 · #139 · #84</span><span class="owner">C</span></div>
+      <p>"Them &amp; You" caregiver redesign (#140), signed/expiring URLs for voice memos (#139), one-task-at-a-time shutdown-day fallback (#84).</p></div>
+  </div>
+</div></section>
+
+<!-- LATER -->
+<section id="later"><div class="wrap">
+  <div class="sec-head"><h2>5 · Longer-term ideation</h2><span class="sec-tag tag-later">validated, no timeline</span></div>
+  <p class="sec-note">The deep roadmap. Mostly native-iOS surface area and platform expansion — high-delight, none load-bearing for v1.</p>
+  <div class="cards">
+    <div class="card"><div class="top"><h3>Native iOS surface</h3><span class="ref">#82 · #83 · #86 · #89 · #90 · #88 · #85 · #91</span></div>
+      <p>Home/Lock-screen widgets, interactive push (long-press to approve/check-in), time-sensitive check-in notifications, Siri &amp; App Intents, Live Activities / Dynamic Island for timers, Apple Watch app, Focus-filter integration, and the formal Assistive Access cognitive-accessibility scene.</p></div>
+    <div class="card"><div class="top"><h3>Sensory environment depth</h3><span class="ref">#72 · #153</span></div>
+      <p>State-adaptive soundscapes (birdsong/brown noise, evidence-backed) and the "Living Sky" time-of-day ambient background per theme. Both extend the sensory-environment thesis.</p></div>
+    <div class="card"><div class="top"><h3>Language &amp; pronoun depth</h3><span class="ref">#171 · #141</span></div>
+      <p>User-set language preference (identity-first/person-first, effusiveness). Pronoun engine is partially shipped; finish the app-wide sweep.</p></div>
+    <div class="card"><div class="top"><h3>Platform &amp; business expansion</h3></div>
+      <p>Android build (the adaptive iPad layer paves the way), cross-household caregiver access (a pro serving many families), circle messaging Phase 2 (#112), therapist/clinician share export, and pricing options (sibling discount, monthly, gift subs).</p></div>
+  </div>
+</div></section>
+
+<!-- DECISIONS -->
+<section id="decisions"><div class="wrap">
+  <div class="sec-head"><h2>Decisions only you can make</h2><span class="sec-tag tag-later">I'll build the moment you pick</span></div>
+  <div class="callout">
+    <div class="decision"><b>1 · Solo reward model (highest impact — Gabby's "boring")</b>
+      <span>Self-discipline (she writes her own rule, app holds her to it) vs accountability partner (a supporter gates the treat until a star threshold) vs both/either, user's choice. This reshapes the solo reward surface that shipped yesterday.</span></div>
+    <div class="decision"><b>2 · Crisis safety net — is it a hard launch gate?</b>
+      <span>I recommend shipping it (ethical floor for a vulnerable-user product). Confirm, and confirm the threshold (default 5 consecutive shutdowns / 10 silent days).</span></div>
+    <div class="decision"><b>3 · Completion sound (Gabby's "popping bubble")</b>
+      <span>Add a gentle, opt-in, silenceable pop on task completion? Sensory canon allows it if it's anticipated and never startling. Yes/no, and on by default or off.</span></div>
+    <div class="decision"><b>4 · "Did you know" surfacing</b>
+      <span>Show ~5 cards inline on the Care tile, or keep one + a clearer "more" affordance into the existing infinite reader? Capability already exists; this is just how to expose it.</span></div>
+    <div class="decision"><b>5 · Emoji unlocks for the Sarah-types</b>
+      <span>Build cosmetic unlocks in a canon-safe way (non-contingent markers, or layered on a self-backed goal — not earnable terminal rewards)? Or park it. See #189.</span></div>
+  </div>
+</div></section>
+
+<!-- INDEX -->
+<section id="index"><div class="wrap">
+  <div class="sec-head"><h2>Open issue index</h2></div>
+  <p class="sec-note">Everything currently open in GitHub, bucketed. Status reflects code reality, not the issue label.</p>
+  <table class="idx">
+    <thead><tr><th>#</th><th>Title</th><th>Bucket</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>111</td><td>Swap invite URL TestFlight → App Store</td><td>At launch</td><td>Launch-day</td></tr>
+      <tr><td>115</td><td>Invite-join ghost members / burned invites</td><td>Must (verify)</td><td>Fixed in code; Apple-path verify</td></tr>
+      <tr><td>163</td><td>Stale join-state traps user at onboarding finish</td><td>Should</td><td>Open bug</td></tr>
+      <tr><td>164</td><td>Verify Lexend trailing-char clip is Expo-Go-only</td><td>Should</td><td>Open bug</td></tr>
+      <tr><td>180</td><td>Subject task reminders (M/A/E buckets)</td><td>Should (slice) / Fast-follow (full)</td><td>Designed, not built</td></tr>
+      <tr><td>187</td><td>Reward backbone v1.0 (custom + backing gate)</td><td>—</td><td>Shipped</td></tr>
+      <tr><td>188</td><td>Calming tools: bubble breathing + lemon squeeze</td><td>Fast-follow</td><td>Filed</td></tr>
+      <tr><td>189</td><td>Solo-user reward: unlockable emojis</td><td>Decision / Fast-follow</td><td>Filed (canon tension)</td></tr>
+      <tr><td>116</td><td>Apple Sign In duplicate-identity root cause</td><td>Fast-follow</td><td>Open bug</td></tr>
+      <tr><td>166</td><td>Caregiver progress dashboard ("66 days")</td><td>Fast-follow</td><td>Queued</td></tr>
+      <tr><td>140</td><td>Caregiver experience redesign — Them &amp; You</td><td>Fast-follow</td><td>Queued</td></tr>
+      <tr><td>141</td><td>Inclusive pronoun system + engine</td><td>Fast-follow / later</td><td>Partially shipped</td></tr>
+      <tr><td>87</td><td>Voice-note playback polish</td><td>Fast-follow</td><td>Queued</td></tr>
+      <tr><td>139</td><td>Audio-privacy: signed/expiring voice-memo URLs</td><td>Fast-follow</td><td>Queued</td></tr>
+      <tr><td>84</td><td>Low-spoons mode (shutdown-day fallback)</td><td>Fast-follow</td><td>Queued</td></tr>
+      <tr><td>112</td><td>Circle Phase 2 — direct messaging</td><td>Later</td><td>Queued</td></tr>
+      <tr><td>153</td><td>Living Sky ambient background</td><td>Later</td><td>Queued</td></tr>
+      <tr><td>72</td><td>Soundscapes (research)</td><td>Later</td><td>Research</td></tr>
+      <tr><td>171</td><td>User-set language preference</td><td>Later</td><td>Queued</td></tr>
+      <tr><td>82/83/85/86/88/89/90/91</td><td>Native iOS suite (widgets, push, focus, watch, Siri, Live Activities, Assistive Access)</td><td>Later</td><td>Backlog</td></tr>
+      <tr><td>109</td><td>iPad form-modal pageSheets</td><td>Later</td><td>Deferred</td></tr>
+      <tr><td>2 / 1 / 3 / 71</td><td>Onboarding copy, vision, resources, infra docs</td><td>Docs / various</td><td>Open</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<footer><div class="wrap">
+  Generated from a code-verified sweep on June 15, 2026. Status pills reflect what's actually in the repo, deployed functions, and live config — not issue labels or checklist boxes, both of which are stale. Where something is admin/external it's marked; everything else I can build.
+</div></footer>
+
+</body>
+</html>
